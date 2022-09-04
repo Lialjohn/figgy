@@ -102,6 +102,7 @@ async function startSession() {
         stopBtn.removeEventListener('click', quit)
         pauseBtn.removeEventListener('click', pause)
         forwardBtn.removeEventListener('click', nextImage)
+        window.removeEventListener('keydown', pause)
         fadeTimer = null
     }    
 
@@ -110,7 +111,8 @@ async function startSession() {
         return figControls.style.opacity !== '0';
     }
     
-    const pause = () => {
+    const pause = e => {
+        if (e.type === 'keydown' && e.which !== 32) return
         if (isPaused) {
             pauseBtn.classList.remove('on')
             t.startTime = Date.now()
@@ -146,6 +148,7 @@ async function startSession() {
     overlay.addEventListener('mousemove', fadeControls)
     stopBtn.addEventListener('click', quit)
     pauseBtn.addEventListener('click', pause)
+    window.addEventListener('keydown', pause)
     forwardBtn.addEventListener('click', nextImage)
     fadeControls()
     startTimer()
