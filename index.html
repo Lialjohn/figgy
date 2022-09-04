@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
+    <title>Figure Drawing</title>
+    <link rel="stylesheet" href="./public/main.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Silkscreen">
+  </head>
+  <body>
+    <main>
+        <div id="all-options">
+            <div class="time-per-figure options">
+                <strong>Pose: </strong>
+                <div class="input-container">
+                    <label for="30-sec-figure">
+                        <input type="radio" class="figure-time-radio btn" id="30-sec-figure" name="time-per-figure-radio" value="30" checked>
+                        <div class="time-options-box">
+                            <span>30 sec</span>
+                        </div>
+                    </label>
+
+                    <label for="60-sec-figure">
+                        <input type="radio" class="figure-time-radio btn" id="60-sec-figure" name="time-per-figure-radio" value="60">
+                        <div class="time-options-box">
+                            <span>1 min</span>
+                        </div>
+                    </label>
+
+                    <label for="120-sec-figure">
+                        <input type="radio" class="figure-time-radio btn" id="120-sec-figure" name="time-per-figure-radio" value="120">
+                        <div class="time-options-box">
+                            <span>2 min</span>
+                        </div>
+                    </label>
+
+                    <label for="300-sec-figure">
+                        <input type="radio" class="figure-time-radiob btn" id="300-sec-figure" name="time-per-figure-radio" value="300">
+                        <div class="time-options-box">
+                            <span>5 min</span>
+                        </div>
+                    </label>
+
+                </div>
+            </div>
+            <div class="time-per-session options">
+                <strong>Session: </strong>
+                <div class="input-container">
+                    <label for="5-min-session">
+                        <input type="radio" class="session-time-radio btn" id="5-min-session" name="session-time-radio" value="300" checked>
+                        <div class="time-options-box">
+                            <span>5 min</span>
+                        </div>
+                    </label>
+
+                    <label for="10-min-session">
+                        <input type="radio" class="session-time-radio btn" id="10-min-session" name="session-time-radio" value="600">
+                        <div class="time-options-box">
+                            <span>10 min</span>
+                        </div>
+                    </label>
+
+                    <label for="20-min-session">
+                        <input type="radio" class="session-time-radio btn" id="20-min-session" name="session-time-radio" value="1200">
+                        <div class="time-options-box">
+                            <span>20 min</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            <div class="img-type options">
+                <strong>Include:</strong>
+                <div class="input-container">
+                    <label for="figure-option">
+                        <input type="checkbox" class="include-checkbox btn" id="figure-option" name="include-checkbox" value="figure">
+                        <div class="time-options-box">
+                            <span>figure</span>
+                        </div>
+                    </label>
+                    <label for="face-option">
+                        <input type="checkbox" class="include-checkbox btn" id="face-option" name="include-checkbox" value="face">
+                        <div class="time-options-box">
+                            <span>face</span>
+                        </div>
+                    </label>
+                    <label for="clothing-option">
+                        <input type="checkbox" class="include-checkbox btn" id="clothing-option" name="include-checkbox" value="clothing">
+                        <div class="time-options-box">
+                            <span>Clothes</span>
+                        </div>
+                    </label>
+                    <label for="hands-option">
+                        <input type="checkbox" class="include-checkbox btn" id="hands-option" name="include-checkbox" value="hands">
+                        <div class="time-options-box">
+                            <span>hands</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <button type="button" id="start-btn" class="btn">Begin practice</button>
+    </main>
+    <div class="overlay">
+        <div class="timer-container">
+            <div class="minutes timer"></div>
+            <div class="minutes timer"></div>
+            <div class="colon timer">:</div>
+            <div class="seconds timer"></div>
+            <div class="seconds timer"></div>
+            <div class="colon timer">:</div>
+            <div class="ms timer"></div>
+            <div class="ms timer"></div>
+            <div class="ms timer"></div>
+        </div>
+        <div id="figure-area"></div>
+        <div class="control-bar-cont">
+            <div class="control-bar">
+                <div class="control-button backward">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M459.5 71.41l-171.5 142.9v83.45l171.5 142.9C480.1 457.7 512 443.3 512 415.1V96.03C512 68.66 480.1 54.28 459.5 71.41zM203.5 71.41L11.44 231.4c-15.25 12.87-15.25 36.37 0 49.24l192 159.1c20.63 17.12 52.51 2.749 52.51-24.62v-319.9C255.1 68.66 224.1 54.28 203.5 71.41z"/></svg>
+                </div>
+                <div class="control-button pause">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M272 63.1l-32 0c-26.51 0-48 21.49-48 47.1v288c0 26.51 21.49 48 48 48L272 448c26.51 0 48-21.49 48-48v-288C320 85.49 298.5 63.1 272 63.1zM80 63.1l-32 0c-26.51 0-48 21.49-48 48v288C0 426.5 21.49 448 48 448l32 0c26.51 0 48-21.49 48-48v-288C128 85.49 106.5 63.1 80 63.1z"/></svg>
+                </div>
+                <div class="control-button stop">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M384 128v255.1c0 35.35-28.65 64-64 64H64c-35.35 0-64-28.65-64-64V128c0-35.35 28.65-64 64-64H320C355.3 64 384 92.65 384 128z"/></svg>
+                </div>
+                <div class="control-button forward">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M52.51 440.6l171.5-142.9V214.3L52.51 71.41C31.88 54.28 0 68.66 0 96.03v319.9C0 443.3 31.88 457.7 52.51 440.6zM308.5 440.6l192-159.1c15.25-12.87 15.25-36.37 0-49.24l-192-159.1c-20.63-17.12-52.51-2.749-52.51 24.62v319.9C256 443.3 287.9 457.7 308.5 440.6z"/></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./renderer.js"></script>
+  </body>
+</html>

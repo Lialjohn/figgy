@@ -1,0 +1,5 @@
+.vscode
+images/*
+main.scss
+main.css.map
+node_modules/
