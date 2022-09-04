@@ -87,9 +87,7 @@ async function startSession() {
 
         if (t.remainingTime <= 0) {
             t.count--
-            t.startTime = Date.now()
-            t.pauseTime = 0
-            setImage()
+            nextImage()
         }
         if (t.count) {
             timer = setTimeout(startTimer, 50)
@@ -103,7 +101,7 @@ async function startSession() {
         overlay.removeEventListener('mousemove', fadeControls)
         stopBtn.removeEventListener('click', quit)
         pauseBtn.removeEventListener('click', pause)
-        forwardBtn.removeEventListener('click', skipForward)
+        forwardBtn.removeEventListener('click', nextImage)
         fadeTimer = null
     }    
 
@@ -125,8 +123,12 @@ async function startSession() {
         isPaused = !isPaused
     }
     
-    const skipForward = () => {
+    const nextImage = () => {
         // skip to next image, time for slide is reset
+        t.startTime = Date.now()
+        t.pauseTime = 0
+        setImage()
+
     }
 
     const fadeControls = () => {
@@ -144,7 +146,7 @@ async function startSession() {
     overlay.addEventListener('mousemove', fadeControls)
     stopBtn.addEventListener('click', quit)
     pauseBtn.addEventListener('click', pause)
-    forwardBtn.addEventListener('click', skipForward)
+    forwardBtn.addEventListener('click', nextImage)
     fadeControls()
     startTimer()
     setImage()

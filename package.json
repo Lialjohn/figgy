@@ -2,7 +2,7 @@
   "name": "y",
   "version": "1.0.0",
   "description": "a desktop app for figure drawing",
-  "main": "app/main.js",
+  "main": "main.js",
   "scripts": {
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
