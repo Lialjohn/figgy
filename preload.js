@@ -1,5 +1,5 @@
 const { contextBridge, ipcRenderer } = require('electron')
 
 contextBridge.exposeInMainWorld('figgy', {
-    getImages: (choice) => ipcRenderer.invoke('get-images', choice),
+    getFiles: (folder) => ipcRenderer.invoke('app:get-files', folder),
 })

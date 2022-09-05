@@ -11,5 +11,8 @@
   "license": "ISC",
   "devDependencies": {
     "electron": "^20.1.0"
+  },
+  "dependencies": {
+    "fs-extra": "^10.1.0"
   }
 }

@@ -1,9 +1,14 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
-const fs = require('fs')
+const fs = require('fs-extra')
 
-async function handleImageChoices(_, choice) {
-  return await fs.promises.readdir(path.join(__dirname, 'images', choice))
+function getFileNames(_, folder) {
+  let dir = path.join('./images', (folder || ""))
+  const files = fs.readdirSync(dir)
+  return files.map(fileName => {
+    const filePath = folder ? path.join(__dirname, 'images', folder, fileName) : dir
+    return { name: fileName, path: filePath }
+  })
 }
 
 function createWindow () {
@@ -13,16 +18,11 @@ function createWindow () {
     }
   })
   mainWindow.webContents.openDevTools()
-  ipcMain.on('set-title', (event, title) => {
-    const webContents = event.sender
-    const win = BrowserWindow.fromWebContents(webContents)
-    win.setTitle(title)
-  })
   mainWindow.loadFile('index.html')
 }
 
 app.whenReady().then(() => {
-  ipcMain.handle('get-images', handleImageChoices)
+  ipcMain.handle( 'app:get-files', getFileNames)
   app.on('activate', function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })

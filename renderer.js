@@ -12,6 +12,33 @@ const forwardBtn = document.querySelector('.forward')
 const backBtn = document.querySelector('.backward')
 const imgContainer = document.getElementById('figure-area')
 
+async function displayCategories() {
+    const categoryContainer = document.getElementById('category-container')
+    const folderList = await window.figgy.getFiles()
+    folderList.forEach(folder => {
+        const newLabel = document.createElement('label')
+        const newInput = document.createElement('input')
+        const newDiv = document.createElement('div')
+        const newSpan = document.createElement('span')
+
+        newLabel.htmlFor = `${folder.name}-option`
+        newInput.type = "checkbox"
+        newInput.classList.add('include-checkbox', 'btn')
+        newInput.id = `${folder.name}-option`
+        newInput.name = "include-checkbox"
+        newInput.value = folder.name
+        newDiv.classList.add('time-options-box')
+        newSpan.innerText = folder.name
+
+        newDiv.appendChild(newSpan)
+        newLabel.appendChild(newInput)
+        newLabel.appendChild(newDiv)
+        categoryContainer.appendChild(newLabel)
+    })
+}
+
+displayCategories()
+
 const shuffle = array => {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -20,27 +47,27 @@ const shuffle = array => {
     return array
 }
 
-async function createImgArray(userChoices) {
-    let includes = [];
-    for (let elem of userChoices) includes.push(elem.value);
+async function createImgArray() {
+    const userChoices = document.querySelectorAll('input[name="include-checkbox"]:checked');
     let imgPaths = []
-    for (let choice of includes) {
-        let data = await window.figgy.getImages(choice)
-        data = data.map(v => `./images/${choice}/${v}`)
-        imgPaths = [...imgPaths, ...data]
+
+    for (let elem of userChoices) {
+        let files = await window.figgy.getFiles(elem.value)
+        files.forEach(file => imgPaths.push(file.path))
     }
+
     return shuffle(imgPaths)
 }
 
 async function startSession() {
     let imgTime = document.querySelector('input[name="time-per-figure-radio"]:checked').value * 1000;
     let sessionTime = document.querySelector('input[name="session-time-radio"]:checked').value * 1000;
-    let userChoices = document.querySelectorAll('input[name="include-checkbox"]:checked');
 
     imgTime = 5000 // short img slider for testing purposes
     sessionTime = 20000
 
-    let imgs = await createImgArray(userChoices)
+    // let imgs = await createImgArray(userChoices)
+    let imgs = await createImgArray()
     let totalSlides = Math.floor(sessionTime/imgTime)
     let isPaused = false
     let i = 0
@@ -64,14 +91,6 @@ async function startSession() {
         },
     }
 
-    const setImage = () => {
-        imgContainer.style.visibility = 'visible'
-        imgContainer.style.background = `no-repeat center url(${imgs[i]})`
-        imgContainer.style.backgroundSize = 'contain'
-        i++
-        if (i > imgs.length - 1) i = 0
-    }
-
     const startTimer = () => {
         let [minsOnes, minsTens, minsHunds] = t.getClockNumbers(t.minsLeft)
         let [secsOnes, secsTens, secsHunds] = t.getClockNumbers(t.secsLeft)
@@ -87,7 +106,7 @@ async function startSession() {
 
         if (t.remainingTime <= 0) {
             t.count--
-            nextImage()
+            setImage()
         }
         if (t.count) {
             timer = setTimeout(startTimer, 50)
@@ -101,8 +120,8 @@ async function startSession() {
         overlay.removeEventListener('mousemove', fadeControls)
         stopBtn.removeEventListener('click', quit)
         pauseBtn.removeEventListener('click', pause)
-        forwardBtn.removeEventListener('click', nextImage)
-        window.removeEventListener('keydown', pause)
+        forwardBtn.removeEventListener('click', setImage)
+        window.removeEventListener('keydown', hotKeyRedirect)
         fadeTimer = null
     }    
 
@@ -110,9 +129,9 @@ async function startSession() {
     const opaque = () => {
         return figControls.style.opacity !== '0';
     }
-    
+
     const pause = e => {
-        if (e.type === 'keydown' && e.which !== 32) return
+        // if (e.type === 'keypress' && e.which !== 32) return
         if (isPaused) {
             pauseBtn.classList.remove('on')
             t.startTime = Date.now()
@@ -124,13 +143,24 @@ async function startSession() {
         }
         isPaused = !isPaused
     }
-    
-    const nextImage = () => {
-        // skip to next image, time for slide is reset
+
+    const setImage = () => {
+        // start next slide
         t.startTime = Date.now()
         t.pauseTime = 0
-        setImage()
+        imgContainer.style.visibility = 'visible'
+        imgContainer.style.background = `no-repeat center url(${imgs[i]})`
+        imgContainer.style.backgroundSize = 'contain'
+        i++
+        if (i > imgs.length - 1) i = 0
+    }
 
+    const hotKeyRedirect = e => {
+        e.preventDefault()
+        if (e.which === 39) setImage()
+        else if (e.which === 32) pause()
+        else if (e.which === 27) quit()
+        else return
     }
 
     const fadeControls = () => {
@@ -148,8 +178,8 @@ async function startSession() {
     overlay.addEventListener('mousemove', fadeControls)
     stopBtn.addEventListener('click', quit)
     pauseBtn.addEventListener('click', pause)
-    window.addEventListener('keydown', pause)
-    forwardBtn.addEventListener('click', nextImage)
+    forwardBtn.addEventListener('click', setImage)
+    window.addEventListener('keydown', hotKeyRedirect)
     fadeControls()
     startTimer()
     setImage()
