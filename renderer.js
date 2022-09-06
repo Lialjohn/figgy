@@ -55,7 +55,7 @@ async function createImgArray() {
         let files = await window.figgy.getFiles(elem.value)
         files.forEach(file => imgPaths.push(file.path))
     }
-
+    console.log(imgPaths)
     return shuffle(imgPaths)
 }
 
@@ -153,6 +153,7 @@ async function startSession() {
         imgContainer.style.backgroundSize = 'contain'
         i++
         if (i > imgs.length - 1) i = 0
+        console.log(imgs[i])
     }
 
     const hotKeyRedirect = e => {
