@@ -14,23 +14,6 @@ function getFileNames(_, folder) {
   })
 }
 
-// function createWindow () {
-//   const mainWindow = new BrowserWindow({
-//     webPreferences: {
-//       preload: path.join(__dirname, 'preload.js')
-//     }
-//   })
-  // mainWindow.webContents.openDevTools()
-//   // mainWindow.loadFile('index.html')
-//   mainWindow.loadURL(
-//     url.format({
-//       pathname: path.join(__dirname, "index.html"),
-//       protocol: "file:",
-//       slashes: true
-//     })
-//   );
-// }
-
 app.on("ready", () => {
   // setApplicationMenu();
   // initIpc();
@@ -62,13 +45,6 @@ app.on("ready", () => {
   );
     
 });
-
-// app.whenReady().then(() => {
-//   ipcMain.handle( 'app:get-files', getFileNames)
-//   app.on('activate', function () {
-//     if (BrowserWindow.getAllWindows().length === 0) createWindow()
-//   })
-// })
 
 app.on('window-all-closed', function () {
     if (process.platform !== 'darwin') app.quit()
