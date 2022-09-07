@@ -14,7 +14,8 @@ function getFileNames(_, folder) {
 function createWindow () {
   const mainWindow = new BrowserWindow({
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: true,
     }
   })
   mainWindow.webContents.openDevTools()
