@@ -12,14 +12,13 @@ todos, in no particular order or priority:
 - [ ] make executable for (my) windows OS
 - [ ] set up rewind button functionality
 - [ ] have pause button visually change to play button on click
-- [ ] add functionality for creating directories directly in app
+- [ ] add functionality for creating directories directly in app. Copy existing directories into project dir, give option to name new dir before saving
 - [ ] image counter display for session
 - [x] fix the ugly timer rollback, happens when a slide ends
 - [x] hotkey functionality for control bar buttons
 - [x] have the app detect what folders are available and visually display them on the main options screen under 'include:'. Currently they're hard coded.
 - [ ] display a warning when no 'include: ' category is selected
 - [ ] add functionality for saving images directly through app
-- [ ] look into changing image path retrieval. Maybe collect via file name rather than folder name. Or nest folders by category to stay specific without duplicating images.
 - [ ] drag and drop categories to reorganize them
 - [ ] ability to save settings, like how categories are organized, theme changes, etc.
 - [ ] option to make certain setting default, maybe even saved playlists

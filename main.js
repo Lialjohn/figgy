@@ -1,6 +1,22 @@
-const { app, BrowserWindow, ipcMain } = require('electron')
+const { app, BrowserWindow, ipcMain, dialog } = require('electron')
 const path = require('path')
 const fs = require('fs-extra')
+
+function addFiles(files = [], folder = "") {
+  dialog.showOpenDialogSync({ properties: ['createDirectory', 'promptToCreate'] })
+}
+
+async function handleDirCopy() {
+  const { canceled, filePaths } = await dialog.showOpenDialog({ 
+    message: 'choose dir',
+    properties: ['openDirectory'] 
+  })
+  if (canceled) {
+    return dialog.showMessageBoxSync({ message: 'no path selected' })
+  } else {
+    return filePaths[0]
+  }
+}
 
 function getFileNames(_, folder) {
   let dir = path.join('./images', (folder || ""))
@@ -13,6 +29,7 @@ function getFileNames(_, folder) {
 
 function createWindow () {
   const mainWindow = new BrowserWindow({
+    backgroundColor: '#7f8a90',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: true,
@@ -23,6 +40,7 @@ function createWindow () {
 }
 
 app.whenReady().then(() => {
+  ipcMain.handle('dialog:copyDir', handleDirCopy)
   ipcMain.handle( 'app:get-files', getFileNames)
   app.on('activate', function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
