@@ -1,36 +1,47 @@
 // import Timer and Slides
 import Timer from './timer.js'
-import { getSlides, setSlide } from './slides.js'
-import { imgContainer, overlay, pauseBtn, stopBtn, forwardBtn, figControls } from '../selectors.js';
+import Slides from './slides.js'
 
 export default async function startSession() {
-    let fadeTimer = null
-    let imgTime = document.querySelector('input[name="time-per-figure-radio"]:checked').value * 1000;
-    let sessionTime = document.querySelector('input[name="session-time-radio"]:checked').value * 1000;
-    imgTime = 5000
-    sessionTime = 15000
-    let totalSlides = Math.floor(sessionTime/imgTime)
-    const userChoices = document.querySelectorAll('input[name="include-checkbox"]:checked');    
-    
-    imgTime = 5000
-    sessionTime = 15000
+    // for each entry in the playlist, create a Slides obj.
+    // start timer as usual, when the slides run out it'll check if there's another entry
+    // if y, stay active and reset with new info. if n, quit()
+    const playlist = await figgy.getStoreItem('activePlaylist')
+    let entry = playlist[0]
 
-    const slides = await getSlides(userChoices)
-    setSlide(slides, imgContainer)
-    const timer = new Timer(imgTime, totalSlides)
-    totalSlides = 0
-    let interval
+    // if no entries in active playlist, display warning and abort operation
+    if (!entry) {
+        alert("no data to start session with")
+        return
+    }
+    const imgContainer = document.getElementById('figure-area')
+    const overlay = document.querySelector('.overlay')
+    const pauseBtn = document.querySelector('.pause')
+    const stopBtn = document.querySelector('.stop')
+    const forwardBtn = document.querySelector('.forward')
+    const figControls = document.querySelector('.control-bar-cont')
+
+    let fadeTimer = null
+    let slides = await Slides.create(entry.cats, entry.slides, imgContainer, 0)
+    const timer = new Timer((entry.imgTime * entry.timeUnit) * 1000)
     
 /////// the interval function on which all other functions related to the session depend D: //////////
-
+    let interval
     const startInterval = () => {
-        interval = setInterval(() => {
+        interval = setInterval(async () => {
             if (timer.remaining <= 0) {
-                timer.count--
-                if (!timer.count) {
-                    quit()
+                if (slides.done) {
+                    const nextEntry = playlist[slides.id + 1]
+                    if (nextEntry) {
+                        let id = slides.id + 1
+                        slides = await Slides.create(nextEntry.cats, nextEntry.slides, imgContainer, id)
+                        timer.slideTime = (nextEntry.imgTime * nextEntry.timeUnit * 1000)
+                        timer.reset()
+                        slides.next(true)
+                    } else quit()
                 } else {
-                    forward()
+                    timer.reset()
+                    slides.next(true)
                 }
             }
             timer.setClock()
@@ -60,12 +71,18 @@ export default async function startSession() {
             timer.pauseTime = timer.remaining
             pauseBtn.classList.add('on')
         }
-        timer.isPaused = !timer.isPaused
+        timer.pause()
     }
 
     const forward = () => {
         timer.reset()
-        setSlide(slides, imgContainer)
+        slides.next()
+    }
+
+    const backward = () => {
+        // haven't hooked this up yet
+        timer.reset()
+        slides.prev()
     }
 
     /////////// misc control bar functions /////////
@@ -87,7 +104,6 @@ export default async function startSession() {
     }
 
     //// add event listeners /////
-
     overlay.classList.add('on')
     pauseBtn.addEventListener('click', pause)
     stopBtn.addEventListener('click', quit)
@@ -98,5 +114,6 @@ export default async function startSession() {
 
     //// now do the thing ////
 
+    slides.next(true)
     startInterval()
 }

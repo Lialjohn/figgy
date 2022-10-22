@@ -17,10 +17,11 @@ todos, in no particular order or priority:
 - [x] fix the ugly timer rollback, happens when a slide ends
 - [x] hotkey functionality for control bar buttons
 - [x] have the app detect what folders are available and visually display them on the main options screen under 'include:'. Currently they're hard coded.
-- [ ] display a warning when no 'include: ' category is selected
+- [x] display a warning and cancel session when no entries given when trying to begin a session
 - [ ] add functionality for saving images directly through app
 - [ ] drag and drop categories to reorganize them
 - [ ] ability to save settings, like how categories are organized, theme changes, etc.
 - [ ] option to make certain setting default, maybe even saved playlists
 - [ ] make an app icon!
-- [ ] improve the css, it looks and is organized terribly rn
+- [x] add playlists
+- [ ] add ability to change themes

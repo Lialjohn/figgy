@@ -4,116 +4,155 @@
     <meta charset="UTF-8">
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
-    <title>Figure Drawing</title>
+    <title>Figgy</title>
     <link rel="stylesheet" href="./public/main.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Silkscreen">
+    <link rel="stylesheet" href="./public/homePage.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Space Mono">
   </head>
   <body>
-    <main>
-        <div id="all-options">
-            <div class="time-per-figure options">
-                <strong>Pose: </strong>
-                <div class="input-container">
-                    <label for="30-sec-figure">
-                        <input type="radio" class="figure-time-radio btn" id="30-sec-figure" name="time-per-figure-radio" value="30" checked>
-                        <div class="time-options-box">
-                            <span>30 sec</span>
-                        </div>
-                    </label>
-
-                    <label for="60-sec-figure">
-                        <input type="radio" class="figure-time-radio btn" id="60-sec-figure" name="time-per-figure-radio" value="60">
-                        <div class="time-options-box">
-                            <span>1 min</span>
-                        </div>
-                    </label>
-
-                    <label for="120-sec-figure">
-                        <input type="radio" class="figure-time-radio btn" id="120-sec-figure" name="time-per-figure-radio" value="120">
-                        <div class="time-options-box">
-                            <span>2 min</span>
-                        </div>
-                    </label>
-
-                    <label for="300-sec-figure">
-                        <input type="radio" class="figure-time-radiob btn" id="300-sec-figure" name="time-per-figure-radio" value="300">
-                        <div class="time-options-box">
-                            <span>5 min</span>
-                        </div>
-                    </label>
-
-                </div>
+    <!-- it'd be cool to have a nav menu that expands to display more explicit labels jus' sayin... -->
+    <nav>
+        <a class="tab" data-tab="home" href="#home">
+            <div class="icon-box active" id="home-tab">
+              <img class="icon" src="./public/icons/pen-solid.svg">
             </div>
-            <div class="time-per-session options">
-                <strong>Session: </strong>
-                <div class="input-container">
-                    <label for="5-min-session">
-                        <input type="radio" class="session-time-radio btn" id="5-min-session" name="session-time-radio" value="300" checked>
-                        <div class="time-options-box">
-                            <span>5 min</span>
-                        </div>
-                    </label>
-
-                    <label for="10-min-session">
-                        <input type="radio" class="session-time-radio btn" id="10-min-session" name="session-time-radio" value="600">
-                        <div class="time-options-box">
-                            <span>10 min</span>
-                        </div>
-                    </label>
-
-                    <label for="20-min-session">
-                        <input type="radio" class="session-time-radio btn" id="20-min-session" name="session-time-radio" value="1200">
-                        <div class="time-options-box">
-                            <span>20 min</span>
-                        </div>
-                    </label>
-                </div>
-            </div>
-            <div class="img-type options">
-                <strong>Include:</strong>
-                <div id="category-container" class="input-container">
-                    <!-- populates with folders in .images -->
-                </div>
-            </div>
-        </div>
-        <button type="button" id="start-btn" class="btn">Begin practice</button>
-        <div id="add-container">
-            <button class="add-folder btn">add folder</button>
-            <button class="add-file btn">add file</button>
-        </div>
-    </main>
-    <div class="overlay">
-        <div class="timer-container">
-            <div class="minutes timer"></div>
-            <div class="minutes timer"></div>
-            <div class="colon timer">:</div>
-            <div class="seconds timer"></div>
-            <div class="seconds timer"></div>
-            <div class="colon timer">:</div>
-            <div class="ms timer"></div>
-            <div class="ms timer"></div>
-            <div class="ms timer"></div>
-        </div>
-        <div id="figure-area"></div>
-        <div class="control-bar-cont">
-            <div class="control-bar">
-                <div class="control-button backward">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M459.5 71.41l-171.5 142.9v83.45l171.5 142.9C480.1 457.7 512 443.3 512 415.1V96.03C512 68.66 480.1 54.28 459.5 71.41zM203.5 71.41L11.44 231.4c-15.25 12.87-15.25 36.37 0 49.24l192 159.1c20.63 17.12 52.51 2.749 52.51-24.62v-319.9C255.1 68.66 224.1 54.28 203.5 71.41z"/></svg>
-                </div>
-                <div class="control-button pause">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M272 63.1l-32 0c-26.51 0-48 21.49-48 47.1v288c0 26.51 21.49 48 48 48L272 448c26.51 0 48-21.49 48-48v-288C320 85.49 298.5 63.1 272 63.1zM80 63.1l-32 0c-26.51 0-48 21.49-48 48v288C0 426.5 21.49 448 48 448l32 0c26.51 0 48-21.49 48-48v-288C128 85.49 106.5 63.1 80 63.1z"/></svg>
-                </div>
-                <div class="control-button stop">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M384 128v255.1c0 35.35-28.65 64-64 64H64c-35.35 0-64-28.65-64-64V128c0-35.35 28.65-64 64-64H320C355.3 64 384 92.65 384 128z"/></svg>
-                </div>
-                <div class="control-button forward">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M52.51 440.6l171.5-142.9V214.3L52.51 71.41C31.88 54.28 0 68.66 0 96.03v319.9C0 443.3 31.88 457.7 52.51 440.6zM308.5 440.6l192-159.1c15.25-12.87 15.25-36.37 0-49.24l-192-159.1c-20.63-17.12-52.51-2.749-52.51 24.62v319.9C256 443.3 287.9 457.7 308.5 440.6z"/></svg>
-                </div>
-            </div>
-        </div>
+        </a>
+        <a class="tab" data-tab="files" href="#files">
+          <div class="icon-box" id="files-tab">
+            <img class="icon" src="./public/icons/folder-open-regular.svg">
+          </div>
+        </a>
+    </nav>
+    <div id="component-container">
+      <div id="home" class="content"></div>
+      <div id="files" class="content"></div>
     </div>
-    <script type="module">
-        import './renderer/renderer.js'
-    </script>
+    <div class="overlay">
+      <div class="timer-container">
+        <div class="minutes timer"></div>
+        <div class="minutes timer"></div>
+        <div class="colon timer">:</div>
+        <div class="seconds timer"></div>
+        <div class="seconds timer"></div>
+        <div class="colon timer">:</div>
+        <div class="ms timer"></div>
+        <div class="ms timer"></div>
+        <div class="ms timer"></div>
+      </div>
+      <div id="figure-area"></div>
+      <div class="control-bar-cont">
+        <div class="control-bar">
+          <div class="control-button backward">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M459.5 71.41l-171.5 142.9v83.45l171.5 142.9C480.1 457.7 512 443.3 512 415.1V96.03C512 68.66 480.1 54.28 459.5 71.41zM203.5 71.41L11.44 231.4c-15.25 12.87-15.25 36.37 0 49.24l192 159.1c20.63 17.12 52.51 2.749 52.51-24.62v-319.9C255.1 68.66 224.1 54.28 203.5 71.41z"/></svg>
+          </div>
+          <div class="control-button pause">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M272 63.1l-32 0c-26.51 0-48 21.49-48 47.1v288c0 26.51 21.49 48 48 48L272 448c26.51 0 48-21.49 48-48v-288C320 85.49 298.5 63.1 272 63.1zM80 63.1l-32 0c-26.51 0-48 21.49-48 48v288C0 426.5 21.49 448 48 448l32 0c26.51 0 48-21.49 48-48v-288C128 85.49 106.5 63.1 80 63.1z"/></svg>
+          </div>
+          <div class="control-button stop">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M384 128v255.1c0 35.35-28.65 64-64 64H64c-35.35 0-64-28.65-64-64V128c0-35.35 28.65-64 64-64H320C355.3 64 384 92.65 384 128z"/></svg>
+          </div>
+          <div class="control-button forward">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M52.51 440.6l171.5-142.9V214.3L52.51 71.41C31.88 54.28 0 68.66 0 96.03v319.9C0 443.3 31.88 457.7 52.51 440.6zM308.5 440.6l192-159.1c15.25-12.87 15.25-36.37 0-49.24l-192-159.1c-20.63-17.12-52.51-2.749-52.51 24.62v319.9C256 443.3 287.9 457.7 308.5 440.6z"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
+
+  <!--- file page templates -->
+
+  <template id="add-file-page-template">
+    <div id="add-file-container" class="template" data-tab="files">
+      <div id="dragdrop-area">
+
+      </div>
+      <div id="buttons-area">
+          <button>add directory</button>
+          <button>add image</button>
+      </div>
+    </div>
+  </template>
+  <template id="file-preview-template">
+    <div class="preview-container" class="template">
+      <a class="preview-link" href="#">
+          <img class="preview-img">
+      </a>
+      <span class="preview-name">image2.jpeg</span>
+    </div>
+  </template>
+
+  <!--  home page stuff -->
+  <template id="home-page-template">
+    <div id="home-page-container" class="template" data-tab="home">
+    <!--- left section home-->
+      <div id="includes-container">
+        <div id="time-options-static">
+          <fieldset class="option-fieldset">
+            <legend>set session options</legend>
+              <label for="time-per-slide">Time per slide:</label>
+              <input type="number" name="time-per-slide" id="time-per-slide" value="1" min="1" max="59">
+              <label for="time-unit"></label>
+              <select name="time-unit" id="time-unit">
+                <option value="1">secs</option>
+                <option value="60" selected>mins</option>
+                <option value="3600">hours</option>
+              </select>
+              <label for="slide-number"></label>
+              <span>for: </span>
+              <input type="number" name="slide-number" id="slide-number" value="10" min="0">
+              <span> images</span>
+              <button type="button" class="btn add-btn">add</button>
+          </fieldset>
+        </div>
+        <div id="all-or-none-btns">
+          <button type="button" id="include-all-btn" class="btn">select all</button>
+          <button type="button" id="clear-choices-btn" class="btn">clear</button>
+        </div>
+        <div id="choose-category-container">
+
+        </div>
+        <div id="start-with">
+          <!-- not sure I want this -->
+          <button style="display: none;" class="'start-btn">start</button>
+        </div>
+      </div>
+      <!-----right section home ---->
+      <div id="right-bottom-home">
+ 
+        <div id="time-options-dynamic">
+          <div class="time-option playlist">
+            <label for="playlist">playlist</label>
+            <select id="playlist-select">
+              <option selected>none</option>
+            </select>
+          </div>
+          <div id="entry-list">
+            <div id="entry-ids"></div>
+            <div id="entries"></div>
+          </div>
+          <button type="button" class="btn" id="save-pl-btn">save playlist</button>
+        </div>
+        <div id="wide-start">
+          <!-- <p>something here</p> -->
+          <div>
+            <span>Session time:</span>
+            <div id="summary" style="color: hotpink">
+              <span class="sum-unit"></span>
+              <span style="display:none">
+                hours
+              </span>
+              <span class="sum-unit"></span>
+              <span style="display:none">mins</span>
+              <span class="sum-unit"></span>
+              <span style = 'display: none'>secs</span>
+            </div>
+          </div>
+          <button type="button" id="start-btn" class="btn">start session</button>
+        </div>
+      </div>
+    </div>
+    <!-- <script src="home.js" type="module"></script>
+    <script src="playlist.js" type="module"></script> -->
+  </template>
+  <script src="renderer/renderer.js" type="module"></script>
 </html>

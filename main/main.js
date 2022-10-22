@@ -1,28 +1,13 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron')
 const path = require('path')
 const fs = require('fs-extra')
-
-function addFiles(files = [], folder = "") {
-  dialog.showOpenDialogSync({ properties: ['createDirectory', 'promptToCreate'] })
-}
-
-async function handleDirCopy() {
-  const { canceled, filePaths } = await dialog.showOpenDialog({ 
-    message: 'choose dir',
-    properties: ['openDirectory'] 
-  })
-  if (canceled) {
-    return dialog.showMessageBoxSync({ message: 'no path selected' })
-  } else {
-    return filePaths[0]
-  }
-}
+const handle = require('./handlers/home')
 
 function getFileNames(_, folder) {
   let dir = path.join('./images', (folder || ""))
   const files = fs.readdirSync(dir)
   return files.map(fileName => {
-    const filePath = folder ? path.join(__dirname, 'images', folder, fileName) : dir
+    const filePath = folder ? path.join(dir, fileName) : dir
     return { name: fileName, path: filePath }
   })
 }
@@ -40,13 +25,20 @@ function createWindow () {
 }
 
 app.whenReady().then(() => {
-  ipcMain.handle('dialog:copyDir', handleDirCopy)
   ipcMain.handle( 'app:get-files', getFileNames)
+  ipcMain.handle('app:get-store-item', handle.getStoreItem),
+  ipcMain.handle('app:add-entry', handle.addEntry)
+  ipcMain.handle('app:remove-entry', handle.removeEntry)
+  ipcMain.handle('app:set-cats', handle.setCats)
+  ipcMain.handle('app:set-active-playlist', handle.setActivePlaylist)
+  ipcMain.handle('app:save-playlist', handle.savePlaylist)
   app.on('activate', function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
 })
 
 app.on('window-all-closed', function () {
-    if (process.platform !== 'darwin') app.quit()
+  // self reminder: window needs to be closed normally. Just ending process doesn't count.
+  handle.clearActivePlaylist()
+  if (process.platform !== 'darwin') app.quit()
 })

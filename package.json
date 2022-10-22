@@ -2,7 +2,7 @@
   "name": "y",
   "version": "1.0.0",
   "description": "a desktop app for figure drawing",
-  "main": "main.js",
+  "main": "main/main.js",
   "scripts": {
     "dev": "electron .",
     "start": "electron-forge start",
@@ -21,7 +21,9 @@
     "electron": "^20.1.0"
   },
   "dependencies": {
+    "electron-prompt": "^1.7.0",
     "electron-squirrel-startup": "^1.0.0",
+    "electron-store": "^8.1.0",
     "fs-extra": "^10.1.0"
   },
   "config": {
