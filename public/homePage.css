@@ -307,15 +307,16 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 5;
+  left: 1rem;
   position: absolute;
   min-height: 50px;
   min-width: 100px;
+  mix-blend-mode: difference;
+  color: white;
 }
 .overlay .timer-container .timer {
-  color: white;
-  height: 1em;
-  width: 1em;
+  height: 1rem;
+  width: 1rem;
 }
 .overlay #figure-area {
   height: 100%;
@@ -324,6 +325,13 @@ button {
   background: no-repeat center;
   background-size: contain;
   transition: 0.5s ease;
+}
+.overlay #image-counter-display {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: white;
+  mix-blend-mode: difference;
 }
 .overlay .control-bar-cont {
   position: absolute;

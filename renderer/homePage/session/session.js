@@ -14,6 +14,8 @@ export default async function startSession() {
         alert("no data to start session with")
         return
     }
+    const imgCounterCont = document.getElementById('image-counter-display')
+    let imgCounter = 1
     const imgContainer = document.getElementById('figure-area')
     const overlay = document.querySelector('.overlay')
     const pauseBtn = document.querySelector('.pause')
@@ -38,10 +40,12 @@ export default async function startSession() {
                         timer.slideTime = (nextEntry.imgTime * nextEntry.timeUnit * 1000)
                         timer.reset()
                         slides.next(true)
+                        imgCounterCont.innerText = imgCounter++
                     } else quit()
                 } else {
                     timer.reset()
                     slides.next(true)
+                    imgCounterCont.innerText = imgCounter++
                 }
             }
             timer.setClock()
@@ -114,6 +118,7 @@ export default async function startSession() {
 
     //// now do the thing ////
 
+    imgCounterCont.innerText = imgCounter++
     slides.next(true)
     startInterval()
 }

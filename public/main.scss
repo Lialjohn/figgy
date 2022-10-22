@@ -1,0 +1,122 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html { height: 100%; }
+body { 
+    background-color: white;
+    min-height: 100%; 
+    width: 100%;
+    display: flex;
+}
+
+nav {
+    max-width: 50px;
+    background-color: darkcyan;
+    overflow: hidden;
+    padding-top: .5rem;
+}
+
+.icon-box {
+    height: 3rem;
+    border-radius: 5px 0 0 5px;
+    padding: .8rem 0 0 .5rem;
+    margin: 0 0 0 .2rem;
+    transform: translateX(10%);
+    &:hover {
+        transition: .2s;
+    }
+    .icon {
+        width: 70%;
+        transition: .2s;
+        filter: invert(100%);
+    }
+}
+
+
+.active {
+    background-color: white;
+    transform: translateX(0%);
+    box-shadow: .5em .5em #11546e;
+    > .icon {
+        width:27px;
+        transition: filter 0s;
+        filter: invert(25%) brightness(150%) sepia(200%) hue-rotate(140deg) saturate(250%) contrast(200%);
+    }
+
+}
+
+#component-container {
+    height: 100vh;
+    overflow: hidden;
+    flex: 1 1 auto;
+}
+.content {
+    height:100%;
+    width:100%
+}
+
+
+//////////////////// file manager page /////////////////////
+
+#add-file-container {
+    height: 100%;
+    padding: 10px;
+}
+
+#dragdrop-area {
+    margin: 1em;
+    height: 90vh;
+    border: 6px double rgba(98, 174, 193, 0.78);
+    background-color: aliceblue;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+}
+
+.preview-container {
+    margin: 5px;
+    padding: 10px;
+    height: calc(100px + 2.2em);
+    width: 120px;
+    transition: .2s ease;
+    border-radius: 5px;
+    &:hover {
+       background-color: #a7e5ec;
+    }
+}
+
+.preview-link {
+    display: block;
+    height: 100px;
+    width:100%;
+    border: 1px solid rgb(54, 93, 142);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: .02em .02em .3em #292e3168;
+    transition: .2s ease;
+    &:hover {
+        transform: translate(0, -2%);
+        box-shadow: .02em .02em .4em #292e3193;
+    }
+}
+
+.preview-img {
+    height: 100%;
+    width:100%;
+    background: radial-gradient(ellipse at top, #11747f, #f69250);
+    transition: .7s ease;
+    &:hover {
+        transform: scale(120%);
+    }
+}
+
+.preview-name {
+    display: block;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: system-ui;
+}

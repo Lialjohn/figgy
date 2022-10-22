@@ -1,6 +1,5 @@
 .vscode
 images/*
-*.scss
 *.css.map
 node_modules/
 out/
