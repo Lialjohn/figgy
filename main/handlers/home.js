@@ -70,8 +70,9 @@ const addEntry = (_, entry) => {
 const removeEntry = (_, i) => {
     try {
         const activePlaylist = store.get('activePlaylist', [])
-        activePlaylist.splice(i - 1, 1)
+        let removed = activePlaylist.splice(i, 1)
         store.set('activePlaylist', activePlaylist)
+        return removed
     } catch(e) {
         console.log(e)
     }

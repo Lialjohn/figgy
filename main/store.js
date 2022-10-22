@@ -32,7 +32,7 @@ const store = new Store({
             type: 'array',
             items: { type: 'string' },
             default: []
-        }
+        },
     }
 })
 

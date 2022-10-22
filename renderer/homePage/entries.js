@@ -15,19 +15,25 @@ export const addEntryListeners = () => {
     summary functions: deals with and displays total session time, compiled from active entries. add, subtract, change.
 */
 
+const getSummaryTotal = () => {
+    const [hoursEl, minutesEl, secondsEl] = document.querySelectorAll('.sum-unit')
+    let seconds = Number(secondsEl.innerText)
+    let minutes = Number(minutesEl.innerText)
+    let hours = Number(hoursEl.innerText)
+    return seconds + (minutes * 60) + (hours * 60 * 60)
+}
+
 const addToSummary= (n) => {
-    // get total seconds from store, add n to total, change summary
+    changeSummary(getSummaryTotal() + n)
 }
 
 const subtractFromSummary = (n) => {
-    // get total seconds from store, subtract n from total, change summary 
+    changeSummary(getSummaryTotal() - n)
 }
 
 const changeSummary = (n) => {
     // sums up image time for display each time an entry is added. takes total seconds, as arg
-    // this isn't yet hooked up to new UI.
-    const summary = document.getElementById('summary')
-    let [hoursEl, minutesEl, secondsEl] = summary.querySelectorAll('.sum-unit')
+    const [hoursEl, minutesEl, secondsEl] = document.querySelectorAll('.sum-unit')
     let seconds = (n % 60)
     let minutes = Math.floor(n / 60)
     let hours = Math.floor(n / 60 / 60)
@@ -58,12 +64,18 @@ const addNewEntry = async (_, slides, imgTime, timeUnit) => {
         timeUnit,
         cats: await figgy.getStoreItem('selectedCats')
     }
+    
+    if (!entry.cats,length) {
+        // display dialog to warn user... should make an api function for that.
+        return
+    }
+
+    // also, clear active cats after an entry is added? that might be something that could be toggled in settings.
     const res = await figgy.addEntry(entry)
     const activePlaylist = await figgy.getStoreItem('activePlaylist')
     console.log('active: ', activePlaylist)
     if (res === true) {
         createEntry(activePlaylist.length, entry)
-        changeSummary(slides * (imgTime * timeUnit))
     }
 }
 
@@ -101,15 +113,20 @@ const createEntry = (n, entry) => {
     newEntry.classList.add('playlist-entry')
     newEntry.innerHTML = entryText
     entryList.appendChild(newEntry)
+    // add to summary
+    addToSummary(entry.slides * (entry.imgTime * entry.timeUnit))
 }
 
 const removeEntry = async e => {
     //removes a playlist entry
     if (e.target.classList.contains('svg-icon')) {
+
+        let i = e.currentTarget.querySelector('.entry-num').innerText
+        let [removed] = await figgy.removeEntry(i - 1)
+        subtractFromSummary(removed.slides * (removed.imgTime * removed.timeUnit))
+
         const entryContainer = document.getElementById('entries')
         const idContainer = document.getElementById('entry-ids')
-        let i = e.currentTarget.querySelector('.entry-num').innerText
-        await figgy.removeEntry(i - 1)
         entryContainer.removeChild(entryContainer.childNodes[i - 1])
         idContainer.removeChild(idContainer.lastChild)
     }
@@ -128,6 +145,9 @@ export const resetEntries = (playlist = []) => {
         entryContainer.removeChild(lastEntry)
         lastEntry = entryContainer.lastElementChild
     }
+
+    changeSummary(0)
+
     for (let i = 0; i < playlist.length; i++) {
         createEntry(i + 1, playlist[i])
     }
