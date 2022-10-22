@@ -1,14 +1,18 @@
-import { minutesContainer, secondsContainer, msContainer, timerContainer, overlay, figControls, startBtn, pauseBtn, stopBtn, forwardBtn, backBtn, imgContainer } from '../selectors.js'
-// can import the control bar functions, probably
+// import { minutesContainer, secondsContainer, msContainer } from '../selectors.js'
+const minutesContainer = document.querySelectorAll('.minutes')
+const secondsContainer = document.querySelectorAll('.seconds')
+const msContainer = document.querySelectorAll('.ms')
 
 export default class Timer {
-    constructor(imgTime, count) {
+    // imgTime should be given in MS
+    constructor(imgTime) {
         this.startTime = Date.now(),
         this.pauseTime = 0,
         this.imgTime = imgTime,
-        this.count = count
-        this.isPaused = false
+        this.paused = false
     }
+    set slideTime(time) { this.imgTime = time }
+    get isPaused() { return this.paused }
     get remaining() { return (this.pauseTime || this.imgTime) - (Date.now() - this.startTime) }
     get minsLeft() { return Math.floor((this.remaining/1000)/60) }
     get secsLeft() { return Math.floor((this.remaining/1000) % 60) }
@@ -19,6 +23,7 @@ export default class Timer {
         let ones = Math.floor(n - (hunds * 100) - (tens * 10))
         return [ones, tens, hunds]
     }
+    pause() { this.paused = !this.paused }
     reset() { 
         this.startTime = Date.now()
         this.pauseTime = 0

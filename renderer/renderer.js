@@ -1,7 +1,7 @@
-import { startBtn } from './selectors.js'
-import { displayCategories } from './startup/index.js'
-import startSession from './session/session.js'
+import startSession from './homePage/session/session.js'
+import homeInit from './homePage/index.js'
 
+homeInit()
 
-displayCategories()
+const startBtn = document.getElementById("start-btn")
 startBtn.addEventListener('click', startSession)
