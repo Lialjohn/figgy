@@ -11,7 +11,7 @@ todos, in no particular order or priority:
 - [x] set up skip forward button functionality
 - [ ] make executable for (my) windows OS
 - [ ] set up rewind button functionality
-- [ ] have pause button visually change to play button on click
+- [x] have pause button visually change to play button on click
 - [ ] add functionality for creating directories directly in app. Copy existing directories into project dir, give option to name new dir before saving
 - [x] image counter display for session
 - [x] fix the ugly timer rollback, happens when a slide ends

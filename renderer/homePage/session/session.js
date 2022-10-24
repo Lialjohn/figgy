@@ -65,15 +65,28 @@ export default async function startSession() {
         window.removeEventListener('keydown', hotKeyRedirect)
     }    
 
+    const pauseIcon = document.querySelector('.pause').querySelector('path')
+    let pauseT
     const pause = e => {
+        clearTimeout(pauseT)
+        pauseIcon.setAttribute('d', "M 5,5 l 6,0 q 2,0 2,3 l 0,20  q 0,2 -2,2 l -6,0 q -2,0 -2,-3 l0,-20 q 0,-2 2,-2z M 5,5 l 6,0 q 2,0 2,3 l 0,20  q 0,2 -2,2 l -6,0 q -2,0 -2,-3 l0,-20 q 0,-2 2,-2z")
         if (timer.isPaused) {
-            pauseBtn.classList.remove('on')
+            pauseT = setTimeout(() => {
+                pauseIcon.setAttribute('d', 'M 5,5 l 6,0 q 2,0 2,3 l 0,20  q 0,2 -2,2 l -6,0 q -2,0 -2,-3 l0,-20 q 0,-2 2,-2z M 20,5 l 6,0 q 2,0 2,3 l 0,20  q 0,2 -2,2 l -6,0 q -2,0 -2,-3 l0,-20 q 0,-2 2,-2z')
+            }, 200)
+            imgContainer.style.filter = 'none'
+            window.addEventListener('mousemove', fadeControls)
             timer.startTime = Date.now()
             startInterval()
         } else {
+            pauseT = setTimeout(() => {
+                pauseIcon.setAttribute('d', 'M 6,5.3 l 18,10 q 1.2,1 1,2 l 0,0 q .2,1 -1,2 l -18,10 q -3,1 -3,-2 l0,-20 q 0,-3 3,-2z M 6,5.3 l 18,10 q 1.2,1 1,2 l 0,0 q .2,1 -1,2 l -18,10 q -3,1 -3,-2 l0,-20 q 0,-3 3,-2z')
+            }, 200)
+            imgContainer.style.filter = 'blur(5px) sepia(30%)'
+            window.removeEventListener('mousemove', fadeControls)
+            clearTimeout(fadeTimer)
             clearInterval(interval)
             timer.pauseTime = timer.remaining
-            pauseBtn.classList.add('on')
         }
         timer.pause()
     }
