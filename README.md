@@ -20,8 +20,9 @@ todos, in no particular order or priority:
 - [x] display a warning and cancel session when no entries given when trying to begin a session
 - [ ] add functionality for saving images directly through app
 - [ ] drag and drop categories to reorganize them
+    - [x] add same feature to playlists
 - [ ] ability to save settings, like how categories are organized, theme changes, etc.
-- [ ] option to make certain setting default, maybe even saved playlists
 - [ ] make an app icon!
 - [x] add playlists
 - [ ] add ability to change themes
+- [ ] add playlist manager to remove and edit saved playlists

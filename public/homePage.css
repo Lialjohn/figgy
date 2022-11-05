@@ -237,44 +237,8 @@ button {
   white-space: nowrap;
 }
 #right-bottom-home #time-options-dynamic #entry-list #entries {
-  display: grid;
-  justify-items: start;
-  max-height: 100%;
-}
-#right-bottom-home #time-options-dynamic #entry-list #entries .playlist-entry {
   position: relative;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  margin: 5px 0;
-  min-width: 0;
-  cursor: pointer;
-}
-#right-bottom-home #time-options-dynamic #entry-list #entries .playlist-entry * {
-  margin-right: 10px;
-}
-#right-bottom-home #time-options-dynamic #entry-list #entries .playlist-entry p {
-  white-space: nowrap;
-  overflow-x: scroll;
-}
-#right-bottom-home #time-options-dynamic #entry-list #entries .playlist-entry span, #right-bottom-home #time-options-dynamic #entry-list #entries .playlist-entry strong {
-  white-space: nowrap;
-}
-#right-bottom-home #time-options-dynamic #entry-list #entries .playlist-entry::after {
-  content: "";
-  position: absolute;
-  height: 1px;
-  background-color: black;
-  width: 70%;
-  bottom: -5px;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  transition: 0.3s ease-out;
-}
-#right-bottom-home #time-options-dynamic #entry-list #entries .playlist-entry:hover::after {
-  width: 90%;
-  transition: 0.3s ease-out;
+  max-height: 100%;
 }
 #right-bottom-home #wide-start {
   display: flex;
@@ -397,4 +361,73 @@ button {
   #home-page-container #right-bottom-home #time-options-dynamic {
     max-height: 70%;
   }
+}
+.playlist-entry {
+  font-size: 0.8rem;
+  height: 40px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+.playlist-entry * {
+  margin-right: 10px;
+}
+.playlist-entry p {
+  white-space: nowrap;
+  overflow-x: scroll;
+}
+.playlist-entry span, .playlist-entry strong {
+  white-space: nowrap;
+}
+.playlist-entry::after {
+  content: "";
+  position: absolute;
+  height: 1px;
+  background-color: black;
+  width: 70%;
+  bottom: 2px;
+  left: 0;
+  right: 0;
+  transition: 0.3s ease-out;
+}
+#clone {
+  z-index: 10000;
+}
+
+.grab-active {
+  cursor: -webkit-grabbing;
+  cursor: grabbing;
+}
+
+.grabbed {
+  opacity: 0%;
+}
+
+.moving {
+  transition: transform 0.4s ease;
+}
+
+.noselect {
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  -webkit-user-drag: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+
+.draggable {
+  position: absolute;
+  width: 100%;
+}
+.draggable * {
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  -webkit-user-drag: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
 }/*# sourceMappingURL=homePage.css.map */

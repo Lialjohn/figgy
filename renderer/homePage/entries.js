@@ -1,5 +1,15 @@
+import DragNDropGrid from "../utils/DragNDropGrid.js"
+
+const entriesList = new DragNDropGrid(document.createElement('div'), {
+    containerID: 'entries',
+    draggableClassNames: ['playlist-entry'],
+    cols: 1,
+    rowHeight: 40
+})
+
 export const addEntryListeners = () => {
     const addNewEntryBtn = document.querySelector('.add-btn')
+    entriesList.attachTo(document.getElementById('entry-list'))
     addNewEntryBtn.addEventListener('click', addNewEntry)
 }
 
@@ -15,6 +25,7 @@ export const addEntryListeners = () => {
     summary functions: deals with and displays total session time, compiled from active entries. add, subtract, change.
 */
 
+// there is some wild bug going on where the total doubles into crazy numbers. will fix.
 const getSummaryTotal = () => {
     const [hoursEl, minutesEl, secondsEl] = document.querySelectorAll('.sum-unit')
     let seconds = Number(secondsEl.innerText)
@@ -64,8 +75,8 @@ const addNewEntry = async (_, slides, imgTime, timeUnit) => {
         timeUnit,
         cats: await figgy.getStoreItem('selectedCats')
     }
-    
-    if (!entry.cats,length) {
+
+    if (!entry.cats.length) {
         // display dialog to warn user... should make an api function for that.
         return
     }
@@ -73,7 +84,6 @@ const addNewEntry = async (_, slides, imgTime, timeUnit) => {
     // also, clear active cats after an entry is added? that might be something that could be toggled in settings.
     const res = await figgy.addEntry(entry)
     const activePlaylist = await figgy.getStoreItem('activePlaylist')
-    console.log('active: ', activePlaylist)
     if (res === true) {
         createEntry(activePlaylist.length, entry)
     }
@@ -101,7 +111,7 @@ const createEntry = (n, entry) => {
         <p style="color: hotpink">${cats}</p> 
     `
     const entryIDList = document.querySelector('#entry-ids')
-    const entryList = document.querySelector('#entries')
+    // const entryList = document.querySelector('#entries')
     const newEntryID = document.createElement('div')
     const newEntry = document.createElement('div')
     // add new entry id and delete button
@@ -110,9 +120,8 @@ const createEntry = (n, entry) => {
     newEntryID.addEventListener('click', removeEntry)
     entryIDList.appendChild(newEntryID)
     // add entry information
-    newEntry.classList.add('playlist-entry')
     newEntry.innerHTML = entryText
-    entryList.appendChild(newEntry)
+    entriesList.add(newEntry)
     // add to summary
     addToSummary(entry.slides * (entry.imgTime * entry.timeUnit))
 }
@@ -120,30 +129,28 @@ const createEntry = (n, entry) => {
 const removeEntry = async e => {
     //removes a playlist entry
     if (e.target.classList.contains('svg-icon')) {
-
+        const idContainer = document.getElementById('entry-ids')
         let i = e.currentTarget.querySelector('.entry-num').innerText
+        // remove from store and summary
         let [removed] = await figgy.removeEntry(i - 1)
         subtractFromSummary(removed.slides * (removed.imgTime * removed.timeUnit))
-
-        const entryContainer = document.getElementById('entries')
-        const idContainer = document.getElementById('entry-ids')
-        entryContainer.removeChild(entryContainer.childNodes[i - 1])
+        // remove id & entry DOM elements
+        entriesList.remove(i - 1)
         idContainer.removeChild(idContainer.lastChild)
     }
 }
 
 export const resetEntries = (playlist = []) => {
     // remove any entries that are currently attached, replace with new ones
-    const entryContainer = document.getElementById('entries')
     const entryIDContainer = document.getElementById('entry-ids')
-    let lastEntry = entryContainer.lastElementChild
     let lastID = entryIDContainer.lastElementChild
-    while (lastEntry) {
+    let n = entriesList.draggables.length - 1
+    while (lastID) {
         lastID.removeEventListener('click', removeEntry)
         entryIDContainer.removeChild(lastID)
         lastID = entryIDContainer.lastElementChild
-        entryContainer.removeChild(lastEntry)
-        lastEntry = entryContainer.lastElementChild
+        entriesList.remove(n)
+        n--
     }
 
     changeSummary(0)

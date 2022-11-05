@@ -246,48 +246,11 @@ button{
                 }
             }
             #entries {
-                display: grid;
-                justify-items: start;
+                position: relative;
+                // display: grid;
+                // justify-items: start;
                 max-height: 100%;
-                .playlist-entry {
-                    position: relative;
-                    width: 100%;
-                    display: flex;
-                    align-items: center;
-                    margin: 5px 0;
-                    min-width: 0;
-
-                    cursor: pointer;
-                    * {
-                        margin-right: 10px;
-                    }
-                    p {
-                        white-space: nowrap;
-                        overflow-x: scroll;
-                    }
-                    span, strong {
-                        white-space: nowrap;
-                    }
-                    &::after {
-                        content: '';
-                        position: absolute;
-                        height: 1px;
-                        background-color: black;
-                        width: 70%;
-                        bottom: -5px;
-                        left: 0;
-                        right: 0;
-                        margin: 0 auto;
-                        transition: .3s ease-out;
-    
-                    }
-                    &:hover {
-                        &::after {
-                            width: 90%;
-                            transition: .3s ease-out;
-                        }
-                    }
-                }
+      
             }
         }
         
@@ -419,5 +382,75 @@ button{
                 max-height: 70%;
             }
         }
+    }
+}
+
+
+.playlist-entry {
+    font-size: .8rem;
+    height: 40px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    cursor: grab;
+    * {
+        margin-right: 10px;
+    }
+    p {
+        white-space: nowrap;
+        overflow-x: scroll;
+    }
+    span, strong {
+        white-space: nowrap;
+    }
+    &::after {
+        content: '';
+        position: absolute;
+        height: 1px;
+        background-color: black;
+        width: 70%;
+        bottom: 2px;
+        left: 0;
+        right: 0;
+        transition: .3s ease-out;
+
+    }
+    &:hover {
+
+    }
+}
+#clone {
+    z-index: 10000;
+}
+.grab-active {
+    cursor: grabbing;
+}
+.grabbed {
+    opacity: 0%;
+}
+.moving {
+    transition: transform .4s ease;
+}
+.noselect {
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    -webkit-user-drag: none !important;
+    -khtml-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+}
+.draggable {
+    position: absolute;
+    width: 100%;
+    * {
+        -webkit-touch-callout: none !important;
+        -webkit-user-select: none !important;
+        -webkit-user-drag: none !important;
+        -khtml-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+        user-select: none !important;
     }
 }
